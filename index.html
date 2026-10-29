@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LIVRA: um livro parado pode ganhar uma nova história</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap">
+<style>
+:root{--bg:#faefee;--card:#fff;--ink:#3b2a2d;--muted:#7a5c61;--hero:#dd839d;--hero-ink:#4a2a2e;--wine:#b9546d;--deep:#9b3753;--sage:#55825a;--line:#f0c9d1;--head:#faf0ee;--foot:#3a2a2c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241a1d;--card:#33262a;--ink:#f6e8ea;--muted:#d0b3b9;--hero:#7d3a50;--hero-ink:#fbe9ee;--deep:#6e2640;--line:#5a3944;--head:#2b2023;--foot:#171011}}
+:root[data-theme="dark"]{--bg:#241a1d;--card:#33262a;--ink:#f6e8ea;--muted:#d0b3b9;--hero:#7d3a50;--hero-ink:#fbe9ee;--deep:#6e2640;--line:#5a3944;--head:#2b2023;--foot:#171011}
+*{box-sizing:border-box}
+html{background:var(--head);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "DM Sans",system-ui,sans-serif}
+h1,h2,.logo,.num{font-family:"Playfair Display",Georgia,serif}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--wine);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+header{background:var(--head)}
+.bar{display:flex;align-items:center;gap:8px 20px;flex-wrap:wrap;padding:14px 24px;max-width:1148px;margin:0 auto}
+.logo{font-size:26px;font-weight:700;color:var(--wine);letter-spacing:.02em}
+.tag{font-size:12px;color:var(--muted)}
+nav{display:flex;gap:24px;margin:0 auto}
+nav a,nav button{font:inherit;font-size:15px;color:var(--muted);background:none;border:0;padding:4px;cursor:pointer}
+.auth{display:flex;gap:10px}
+.btn{font:inherit;font-weight:500;border-radius:6px;padding:10px 20px;border:1.5px solid var(--wine);cursor:pointer;background:var(--wine);color:#fff;display:inline-block;text-align:center}
+.btn.ghost{background:transparent;color:var(--wine)}
+.btn.sage{background:var(--sage);border-color:var(--sage)}
+.hero{background:var(--hero);color:var(--hero-ink);padding:72px 0}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+h1{font-size:clamp(34px,5vw,46px);line-height:1.2;margin:0 0 20px}
+.hero p{font-size:18px;max-width:34em;margin:0}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.shelf{width:100%;height:auto;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.14);display:block}
+.sec{padding:56px 0}
+h2{font-size:26px;text-align:center;margin:0 0 32px}
+.filters{display:grid;grid-template-columns:1fr 150px 150px 170px;gap:12px;margin-bottom:28px}
+label{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+input,select{font:inherit;color:var(--ink);padding:11px 12px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);width:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.card{background:var(--card);border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;flex-direction:column}
+.cover{height:200px;display:grid;place-items:center;background:color-mix(in srgb,var(--a) 35%,var(--card))}
+.book{width:124px;height:168px;background:var(--a);border:2px solid var(--b);border-left-width:7px;border-radius:3px 6px 6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:20px 8px 12px;text-align:center;font:600 10px/1.3 "Playfair Display",serif;color:#6b4a3a}
+.dot{width:36px;height:36px;border-radius:50%;background:color-mix(in srgb,var(--b) 60%,#fff);display:grid;place-items:center}
+.dot i{width:18px;height:18px;border-radius:50%;background:var(--b)}
+.book small{font:400 8px/1.2 "DM Sans",sans-serif}
+.info{padding:14px;display:grid;gap:3px;flex:1;align-content:start}
+.pill{justify-self:start;font-size:12px;font-weight:500;padding:2px 10px;border-radius:99px}
+.doacao{background:#d6efd9;color:#255c33}
+.troca{background:#fde5c8;color:#7a4a10}
+.info h3{font:700 15px "DM Sans",sans-serif;margin:6px 0 0}
+.meta{font-size:12px;color:var(--muted)}
+.card .btn{margin:0 14px 14px;padding:9px}
+.btn.done{background:transparent;color:var(--wine)}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted)}
+.how{background:var(--hero);color:var(--hero-ink)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center}
+.steps div{display:grid;gap:8px;justify-items:center}
+.ico{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:var(--wine)}
+.ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.steps h3{margin:6px 0 0;font-size:18px}
+.steps p{margin:0;font-size:15px;max-width:16em}
+.impact{background:var(--deep);color:#fbe9ee;text-align:center}
+.impact h2{margin-bottom:6px}
+.impact .sub{font-size:14px;margin:0 0 32px;opacity:.85}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.num{font-size:44px;font-weight:700;color:#fde5c8;line-height:1.1}
+.final{text-align:center}
+.final p{max-width:40em;margin:0 auto 24px;color:var(--muted)}
+footer{background:var(--foot);color:#f0dde0;padding:40px 0 calc(28px + env(safe-area-inset-bottom,0px))}
+.frow{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.15)}
+.frow .logo{color:var(--hero);display:block}
+.frow nav{margin:0;gap:20px}
+.frow nav a{color:#d9bcc1;font-size:14px}
+.fine{text-align:center;font-size:12px;opacity:.75;margin:20px 0 0}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#3a2a2c;color:#fff;padding:12px 18px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center;font-size:14px}
+#toast.on{opacity:1}
+@media (max-width:760px){
+.hero{padding:48px 0}.hero .wrap{grid-template-columns:1fr}
+.filters{grid-template-columns:1fr 1fr}.filters label:first-child{grid-column:1/-1}
+.steps{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr}
+nav{order:3;width:100%;justify-content:space-between;gap:8px;margin:0}.tag{display:none}.auth{margin-left:auto}
+}
+.cover img{max-height:176px;max-width:80%;border-radius:3px 6px 6px 3px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+dialog{border:0;border-radius:12px;padding:24px;width:min(440px,92vw);background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.list li.u{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sm{padding:5px 12px;font-size:13px}
+#fUser{display:grid;gap:10px;margin-top:8px}
+[hidden]{display:none!important}
+.frow nav button{color:#d9bcc1;font-size:14px}
+dialog::backdrop{background:rgba(40,20,26,.55)}
+dialog h3{font:700 22px "Playfair Display",serif;margin:0 0 16px}
+dialog form{display:grid;gap:14px}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.hint{font-size:13px;color:var(--muted);margin:0 0 8px}
+.who{font-size:14px;color:var(--muted);align-self:center}
+.list{display:grid;gap:10px;margin:0 0 12px;padding:0;list-style:none}
+.list li{padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+.list small{display:block;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}#toast{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a href="#inicio" class="logo">LIVRA</a>
+    <span class="tag">Um livro parado pode ganhar uma nova história</span>
+    <nav aria-label="Principal">
+      <a href="#inicio">Início</a>
+      <a href="#explorar">Explorar livros</a>
+      <a href="#como">Como funciona</a>
+      <button data-act="mine">Meus livros</button>
+      <button data-act="users">Usuários</button>
+    </nav>
+    <div class="auth" id="auth">
+      
+      <button class="btn" data-act="profile">Cadastrar usuário</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <h1>Compartilhe histórias. Descubra novos mundos.</h1>
+      <p>No LIVRA, você pode doar, trocar e encontrar livros gratuitamente. Cada livro parado pode ganhar uma nova história — e cada leitor, um novo mundo para explorar.</p>
+      <div class="cta">
+        <a class="btn" href="#explorar">Explorar livros</a>
+        <button class="btn sage" data-act="addbook">Cadastrar um livro</button>
+      </div>
+    </div>
+    <svg id="shelf" class="shelf" viewBox="0 0 520 340" role="img" aria-label="Estante com livros coloridos"></svg>
+  </div>
+</section>
+
+<section class="sec wrap" id="explorar">
+  <h2>Livros em destaque</h2>
+  <div class="filters">
+    <label for="q">Buscar<input id="q" type="search" placeholder="Título, autor ou gênero…"></label>
+    <label for="g">Gênero<select id="g"></select></label>
+    <label for="m">Modalidade<select id="m"></select></label>
+    <label for="l">Localização<select id="l"></select></label>
+  </div>
+  <div class="grid" id="grid" aria-live="polite"></div>
+</section>
+
+<section class="sec how" id="como">
+  <div class="wrap">
+    <h2>Como funciona</h2>
+    <div class="steps">
+      <div><span class="ico" style="background:#fdeee6"><svg viewBox="0 0 24 24"><path d="M6 4h10a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2zM12 8v6M9 11h6"/></svg></span><h3>Cadastre seu livro</h3><p>Informe o título, autor, gênero e se deseja doar ou trocar.</p></div>
+      <div><span class="ico" style="background:#e9e1f3"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span><h3>Escolha a modalidade</h3><p>Selecione doação para presentear ou troca para receber outro livro.</p></div>
+      <div><span class="ico" style="background:#fdebd3"><svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5V18c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6zM12 6v13.5"/></svg></span><h3>Encontre uma leitura</h3><p>Explore livros disponíveis perto de você e demonstre interesse.</p></div>
+      <div><span class="ico" style="background:#c9dfc7"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span><h3>Combine a entrega</h3><p>Entre em contato e acerte a forma de retirada ou envio.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec impact">
+  <div class="wrap">
+    <h2>Nosso impacto</h2>
+    <p class="sub">Números em tempo real do que foi cadastrado neste site.</p>
+    <div class="stats">
+      <div><div class="num" id="nBooks">0</div>Livros cadastrados</div>
+      <div><div class="num" id="nUsers">0</div>Usuários cadastrados</div>
+      <div><div class="num" id="nInt">0</div>Interesses registrados</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec final wrap">
+  <h2>Tem livros parados em casa?</h2>
+  <p>Dê uma nova vida aos seus livros. Cadastre agora e ajude alguém a descobrir sua próxima leitura favorita.</p>
+  <button class="btn" data-act="addbook">Cadastrar um livro</button>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="frow">
+      <div><span class="logo">LIVRA</span>Um livro parado pode ganhar uma nova história.</div>
+      <nav aria-label="Rodapé"><a href="#inicio">Início</a><a href="#explorar">Explorar</a><a href="#como">Como funciona</a><button data-act="admin">Área do administrador</button></nav>
+    </div>
+    <p class="fine">LIVRA é um protótipo acadêmico desenvolvido como projeto integrador. O cadastro pede só nome e cidade. Nos testes, use dados fictícios.<br><em>“Um leitor vive mil vidas antes de morrer.” — George R.R. Martin</em></p>
+  </div>
+</footer>
+<dialog id="dProfile"><form id="fProfile"><h3>Cadastrar usuário</h3>
+<label>Nome<input name="name" required maxlength="60" autocomplete="off"></label>
+<label>Cidade e UF<input name="city" required maxlength="60" placeholder="Ex.: Balsas, MA" autocomplete="off"></label>
+<p class="hint">Pedimos só nome e cidade.</p>
+<div class="row"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn">Salvar cadastro</button></div></form></dialog>
+<dialog id="dBook"><form id="fBook"><h3>Cadastrar livro</h3>
+<label>Título<input name="t" required maxlength="90" autocomplete="off"></label>
+<label>Autor<input name="a" required maxlength="70" autocomplete="off"></label>
+<label>Gênero<select name="g" id="bgen"></select></label>
+<label>Modalidade<select name="m"><option>Doação</option><option>Troca</option></select></label>
+<label>Localização<input name="c" required maxlength="60" placeholder="Cidade, UF" autocomplete="off"></label>
+<label>Capa do livro (opcional, até 3 MB)<input type="file" name="cover" accept="image/png,image/jpeg,image/webp"></label>
+<div class="row"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn">Cadastrar livro</button></div></form></dialog>
+<dialog id="dMine"><h3>Meus livros</h3><div id="mineBody"></div><div class="row"><button class="btn" data-act="close">Fechar</button></div></dialog>
+<dialog id="dUsers"><h3>Usuários cadastrados</h3><div id="usersBody"></div><div class="row"><button class="btn" data-act="close">Fechar</button></div></dialog>
+<dialog id="dAdmin"><form id="fAdmin"><h3>Área do administrador</h3><label>E-mail<input name="email" type="email" required></label><label>Senha<input name="password" type="password" required></label><div class="row"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn">Entrar</button></div></form><div class="row"><button type="button" class="btn ghost" id="aOut" hidden>Sair do modo administrador</button></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+// COLE AQUI os dados do seu projeto Supabase (Project Settings > API)
+const SUPABASE_URL='https://dewturelhhpoxbyuthzq.supabase.co';
+const SUPABASE_KEY='sb_publishable_uUXNvY39WTMr4llMhk2bBQ_EyN3XvyQ';
+const $=s=>document.querySelector(s);
+const GEN=['Fábula','Autobiografia','Romance','Ficção','Drama','Aventura','Didático','Outro'];
+const PAL=[['#ece3f3','#c9b6e3'],['#fdebd3','#e3b98a'],['#ffe4e8','#f2a9b8'],['#e3ebf3','#a9bfd6'],['#f3e6e2','#d6bcb3'],['#e0efdc','#a8cfa0']];
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let db=null,uid=null,isAdmin=false,isOwner=false,books=[],members=[],interests=[];
+const me=()=>members.find(m=>m.id===uid);
+const opts=(id,all,list)=>{const el=$(id),v=el.value;el.innerHTML=`<option value="">${all}</option>`+list.map(x=>`<option>${esc(x)}</option>`).join('');el.value=v};
+opts('#g','Todos',GEN);opts('#m','Todas',['Doação','Troca']);
+$('#bgen').innerHTML=GEN.map(x=>`<option>${x}</option>`).join('');
+
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove('on'),3500)}
+async function save(fn){
+  if(!db||!uid){toast('Sem conexão com o banco de dados. Recarregue a página.');return false}
+  try{const r=await fn();if(r&&r.error)throw r.error;await load();return true}
+  catch(e){toast('Não foi possível salvar. Tente de novo.');return false}
+}
+
+function card(b){
+  const p=PAL[[...b.t].reduce((s,c)=>s+c.charCodeAt(0),0)%PAL.length];
+  const mine=b.owner===uid,on=interests.some(i=>i.book===b.id&&i.user===uid),n=interests.filter(i=>i.book===b.id).length;
+  const art=b.cover?`<img src="${esc(b.cover)}" alt="Capa de ${esc(b.t)}" loading="lazy">`:`<div class="book"><span class="dot"><i></i></span><span>${esc(b.t)}</span><span><small>${esc(b.a)}</small><br><small>${esc(b.g)}</small></span></div>`;
+  const del=`<button class="btn ghost" data-del="${b.id}">Remover livro</button>`;
+  const act=mine?del:`<button class="btn${on?' done':''}" data-int="${b.id}" aria-pressed="${on}">${on?'Interesse registrado':'Tenho interesse'}</button>${isAdmin?del:''}`;
+  return `<article class="card"><div class="cover" style="--a:${p[0]};--b:${p[1]}">${art}</div>
+  <div class="info"><span class="pill ${b.m==='Doação'?'doacao':'troca'}">${esc(b.m)}</span><h3>${esc(b.t)}</h3><span class="meta">${esc(b.a)}</span><span class="meta">📍 ${esc(b.c)}</span><span class="meta">${esc(b.g)}</span>${n?`<span class="meta">${n} interessado${n>1?'s':''}</span>`:''}${b.by?`<span class="meta">Cadastrado por ${esc(b.by)}</span>`:''}</div>${act}</article>`;
+}
+function render(){
+  opts('#l','Todas',[...new Set(books.map(b=>b.c))].sort());
+  const q=norm($('#q').value),g=$('#g').value,m=$('#m').value,l=$('#l').value;
+  const list=books.filter(b=>(!g||b.g===g)&&(!m||b.m===m)&&(!l||b.c===l)&&norm(b.t+' '+b.a+' '+b.g).includes(q));
+  $('#grid').innerHTML=list.length?list.map(card).join(''):`<p class="empty">${books.length?'Nenhum livro encontrado. Tente outro título ou limpe os filtros.':'Ainda não há livros cadastrados. Cadastre o primeiro!'}</p>`;
+  $('#nBooks').textContent=books.length;$('#nUsers').textContent=members.length;$('#nInt').textContent=interests.length;
+  if($('#dUsers').open)renderUsers();
+  const u=me();
+  $('#auth').innerHTML=u?`<span class="who">Olá, ${esc(u.name)}</span><button class="btn ghost" data-act="profile">Editar perfil</button>`:'<button class="btn" data-act="profile">Cadastrar usuário</button>';
+}
+['#q','#g','#m','#l'].forEach(s=>$(s).addEventListener('input',render));
+
+function openProfile(){
+  if(!db||!uid)return toast('Sem conexão com o banco de dados. Recarregue a página.');
+  const u=me(),f=$('#fProfile').elements;f.name.value=u?u.name:'';f.city.value=u?u.city:'';
+  $('#dProfile').showModal();
+}
+function openBook(){
+  if(!db||!uid)return toast('Sem conexão com o banco de dados. Recarregue a página.');
+  if(!me()){toast('Cadastre-se como usuário antes de cadastrar um livro.');return openProfile()}
+  $('#fBook').elements.c.value=me().city;$('#dBook').showModal();
+}
+function openMine(){
+  if(!me()){toast('Cadastre-se como usuário para ver seus livros.');return openProfile()}
+  const mine=books.filter(b=>b.owner===uid);
+  const want=interests.filter(i=>i.user===uid).map(i=>books.find(b=>b.id===i.book)).filter(Boolean);
+  const who=b=>interests.filter(i=>i.book===b.id).map(i=>esc(i.name)).join(', ');
+  $('#mineBody').innerHTML=`<p class="hint">Livros que você cadastrou</p><ul class="list">${mine.map(b=>`<li>${esc(b.t)}<small>${who(b)?'Interessados: '+who(b):'Ninguém demonstrou interesse ainda'}</small></li>`).join('')||'<li>Você ainda não cadastrou livros.</li>'}</ul>
+  <p class="hint">Livros em que você tem interesse</p><ul class="list">${want.map(b=>`<li>${esc(b.t)}<small>Cadastrado por ${esc(b.by||'LIVRA')}</small></li>`).join('')||'<li>Nenhum por enquanto.</li>'}</ul>`;
+  $('#dMine').showModal();
+}
+function renderUsers(){
+  const rows=members.map(m=>`<li class="u"><div>${esc(m.name)}<small>${esc(m.city)}</small></div>${isOwner?`<button class="btn ghost sm" data-rmu="${esc(m.id)}">Remover</button>`:''}</li>`).join('');
+  const add=isOwner?'<form id="fUser"><p class="hint">Cadastrar outro usuário</p><input name="name" placeholder="Nome" required maxlength="60" autocomplete="off"><input name="city" placeholder="Cidade, UF" required maxlength="60" autocomplete="off"><button class="btn">Cadastrar usuário</button></form>':'';
+  $('#usersBody').innerHTML=(members.length?`<ul class="list">${rows}</ul>`:'<p class="hint">Ainda não há usuários cadastrados.</p>')+add;
+}
+function openUsers(){renderUsers();$('#dUsers').showModal()}
+async function toggleInt(id){
+  if(!me()){toast('Cadastre-se como usuário para demonstrar interesse.');return openProfile()}
+  const on=interests.some(i=>i.book===id&&i.user===uid);
+  if(await save(()=>on?db.from('interests').delete().match({book_id:id,user_id:uid}):db.from('interests').insert({book_id:id,user_id:uid,user_name:me().name})))
+    toast(on?'Interesse removido.':'Interesse registrado. O dono do livro verá seu nome em Meus livros.');
+}
+async function delBook(id){if(await save(()=>db.from('books').delete().eq('id',id)))toast('Livro removido.')}
+async function rmUser(id){if(await save(()=>db.from('members').delete().eq('id',id)))toast('Usuário removido.')}
+
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act],[data-int],[data-del],[data-rmu]');if(!el)return;
+  const {act,int,del,rmu}=el.dataset;
+  if(act==='profile')openProfile();else if(act==='addbook')openBook();else if(act==='mine')openMine();
+  else if(act==='users')openUsers();else if(act==='admin')openAdmin();else if(act==='close')el.closest('dialog').close();
+  else if(int)toggleInt(int);else if(del)delBook(del);else if(rmu)rmUser(rmu);
+});
+document.addEventListener('submit',async e=>{
+  if(e.target.id!=='fUser')return;
+  e.preventDefault();const f=new FormData(e.target),name=f.get('name').trim(),city=f.get('city').trim();
+  if(name&&city&&await save(()=>db.from('members').insert({name,city,managed:true})))toast(`${name} cadastrado.`);
+});
+$('#fProfile').addEventListener('submit',async e=>{
+  e.preventDefault();const f=new FormData(e.target),name=f.get('name').trim(),city=f.get('city').trim();
+  if(name&&city&&await save(()=>db.from('members').upsert({id:uid,name,city}))){$('#dProfile').close();toast(`Cadastro salvo. Bem-vindo(a), ${name}!`)}
+});
+$('#fBook').addEventListener('submit',async e=>{
+  e.preventDefault();const f=Object.fromEntries(new FormData(e.target));let cover=null;const file=f.cover;
+  if(file&&file.size){
+    if(file.size>3e6||!/^image\/(png|jpeg|webp)$/.test(file.type))return toast('Use uma imagem JPG, PNG ou WebP de até 3 MB.');
+    toast('Enviando capa…');
+    const path=`${uid}/${Date.now()}.${file.type.split('/')[1]}`;
+    const up=await db.storage.from('covers').upload(path,file);
+    if(up.error)return toast('Não foi possível enviar a capa. Tente outra imagem ou cadastre o livro sem capa.');
+    cover=db.storage.from('covers').getPublicUrl(path).data.publicUrl;
+  }
+  if(await save(()=>db.from('books').insert({title:f.t.trim(),author:f.a.trim(),genre:f.g,modality:f.m,city:f.c.trim(),cover,owner:uid,by_name:me().name}))){$('#dBook').close();e.target.reset();toast('Livro cadastrado!')}
+});
+
+function openAdmin(){$('#fAdmin').hidden=isOwner;$('#aOut').hidden=!isOwner;$('#dAdmin').showModal()}
+$('#fAdmin').addEventListener('submit',async e=>{
+  e.preventDefault();const f=new FormData(e.target);
+  const r=await db.auth.signInWithPassword({email:f.get('email'),password:f.get('password')});
+  if(r.error)return toast('E-mail ou senha incorretos.');
+  e.target.reset();$('#dAdmin').close();await afterAuth();toast('Modo administrador ativado.');
+});
+$('#aOut').addEventListener('click',async()=>{
+  await db.auth.signOut();await db.auth.signInAnonymously();$('#dAdmin').close();await afterAuth();toast('Você saiu do modo administrador.');
+});
+
+async function load(){
+  const [b,m,i]=await Promise.all([db.from('books').select('*').order('created_at',{ascending:false}),db.from('members').select('*').order('created_at'),db.from('interests').select('*')]);
+  if(b.error||m.error||i.error)return toast('Não foi possível carregar os dados.');
+  books=b.data.map(r=>({id:r.id,t:r.title,a:r.author,g:r.genre,m:r.modality,c:r.city,cover:r.cover,owner:r.owner,by:r.by_name}));
+  members=m.data.map(r=>({id:r.id,name:r.name,city:r.city}));
+  interests=i.data.map(r=>({book:r.book_id,user:r.user_id,name:r.user_name}));
+  render();
+}
+async function afterAuth(){
+  const {data:{session}}=await db.auth.getSession();uid=session.user.id;
+  const a=await db.rpc('is_admin');isOwner=isAdmin=a.data===true;await load();
+}
+async function start(){
+  if(SUPABASE_URL.startsWith('COLE')||!window.supabase){$('#grid').innerHTML='<p class="empty">Configure a URL e a chave do Supabase no início do script do index.html.</p>';return}
+  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  const {data:{session}}=await db.auth.getSession();
+  if(!session){const r=await db.auth.signInAnonymously();if(r.error){$('#grid').innerHTML='<p class="empty">Não foi possível iniciar. Ative o login anônimo no Supabase (veja o LEIA-ME).</p>';return}}
+  await afterAuth();
+}
+$('#grid').innerHTML='<p class="empty">Carregando livros…</p>';
+start();
+window.addEventListener('focus',()=>{if(db)load()});
+
+const row=(r,base)=>r.map(([x,w,h,c])=>`<rect x="${x}" y="${base-h}" width="${w}" height="${h}" rx="3" fill="${c}"/><rect x="${x+5}" y="${base-h+14}" width="${w-10}" height="5" rx="2" fill="#fff" opacity=".35"/>`).join('');
+$('#shelf').innerHTML=`<rect width="520" height="340" fill="var(--hero)"/>
+<rect x="0" y="0" width="22" height="340" fill="#e9b872"/><rect x="498" y="0" width="22" height="340" fill="#e9b872"/>
+${row([[36,40,150,'#8a5a14'],[78,46,160,'#b84d47'],[126,34,130,'#e6dff0'],[162,38,135,'#a5b25e'],[204,34,120,'#e8734a'],[240,32,150,'#3f6b6b'],[274,40,165,'#8fcbe8'],[316,42,160,'#7b72b8'],[360,30,125,'#f6c97a'],[392,52,165,'#b0443f'],[446,40,140,'#e8b86f']],180)}
+<rect x="22" y="180" width="476" height="18" fill="#e9b872"/>
+${row([[36,36,86,'#6d9bb0'],[74,44,100,'#2f6f66'],[122,50,108,'#f4c97a'],[178,30,70,'#e2c9a0'],[214,28,60,'#4b5a66'],[246,30,80,'#2f4858'],[290,34,78,'#2f5a7a'],[328,32,96,'#a8b25a'],[364,30,92,'#e8734a'],[396,40,110,'#2f4a5a']],336)}`;
+</script>
+</body>
+</html>
